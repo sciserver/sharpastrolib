@@ -29,14 +29,14 @@ namespace Jhu.SharpAstroLib.Coords
         ArcMinute
     }
 
-    public enum DegreeStyle
+    public enum AngleStyle
     {
         Decimal,
-        Symbols,
-        Hours,
+        Dms,
+        Hms,
     }
 
-    public enum DegreeWrapAroundStyle
+    public enum AngleWrapAroundStyle
     {
         ZeroTo360,
         PlusMinus180

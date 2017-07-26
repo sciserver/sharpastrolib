@@ -7,7 +7,7 @@
     <ProjectGuid>{8E1302A6-882E-476A-BE41-8C87CB569CEC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Jhu.SharpAstroLib.Web</RootNamespace>
+    <RootNamespace>Jhu.SharpAstroLib</RootNamespace>
     <AssemblyName>Jhu.SharpAstroLib.Web</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -32,6 +32,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -41,6 +42,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Web\UI\Controls\AngleFormatValidator.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Jhu.SharpAstroLib\Jhu.SharpAstroLib.csproj">
+      <Project>{d2de5b24-643c-4980-980a-3e170ca0b49e}</Project>
+      <Name>Jhu.SharpAstroLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

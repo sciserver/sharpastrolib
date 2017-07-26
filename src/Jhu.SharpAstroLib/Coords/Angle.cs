@@ -227,7 +227,7 @@ namespace Jhu.SharpAstroLib.Coords
         {
             var sb = new StringBuilder();
 
-            if (angleFormat.DegreeWrapAroundStyle == DegreeWrapAroundStyle.PlusMinus180 &&
+            if (angleFormat.DegreeWrapAroundStyle == AngleWrapAroundStyle.PlusMinus180 &&
                 value > 180)
             {
                 value -= 360;
@@ -248,13 +248,13 @@ namespace Jhu.SharpAstroLib.Coords
 
             switch (angleFormat.DegreeStyle)
             {
-                case DegreeStyle.Decimal:
+                case AngleStyle.Decimal:
                     FormatDecimal(value, sb, angleFormat);
                     break;
-                case DegreeStyle.Symbols:
+                case AngleStyle.Dms:
                     FormatSymbols(value, sb, angleFormat);
                     break;
-                case DegreeStyle.Hours:
+                case AngleStyle.Hms:
                     FormatHours(value, sb, angleFormat);
                     break;
                 default:

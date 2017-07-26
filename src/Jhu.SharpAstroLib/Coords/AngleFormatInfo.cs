@@ -13,8 +13,8 @@ namespace Jhu.SharpAstroLib.Coords
 
         private NumberFormatInfo numberFormat;
         private string numberFormatString;
-        private DegreeStyle degreeStyle;
-        private DegreeWrapAroundStyle degreeWrapAroundStyle;
+        private AngleStyle degreeStyle;
+        private AngleWrapAroundStyle degreeWrapAroundStyle;
         private double increment;
         private bool leadingPositiveSign;
         private string positiveSign;
@@ -42,13 +42,13 @@ namespace Jhu.SharpAstroLib.Coords
             set { numberFormatString = value; }
         }
 
-        public DegreeStyle DegreeStyle
+        public AngleStyle DegreeStyle
         {
             get { return degreeStyle; }
             set { degreeStyle = value; }
         }
 
-        public DegreeWrapAroundStyle DegreeWrapAroundStyle
+        public AngleWrapAroundStyle DegreeWrapAroundStyle
         {
             get { return degreeWrapAroundStyle; }
             set { degreeWrapAroundStyle = value; }
@@ -132,8 +132,8 @@ namespace Jhu.SharpAstroLib.Coords
         {
             this.numberFormat = CultureInfo.InvariantCulture.NumberFormat;
             this.numberFormatString = "n";
-            this.degreeStyle = DegreeStyle.Decimal;
-            this.degreeWrapAroundStyle = DegreeWrapAroundStyle.PlusMinus180;
+            this.degreeStyle = AngleStyle.Decimal;
+            this.degreeWrapAroundStyle = AngleWrapAroundStyle.PlusMinus180;
             this.increment = 1;                 // increment in degrees
             this.leadingPositiveSign = false;
 
@@ -154,7 +154,7 @@ namespace Jhu.SharpAstroLib.Coords
             {
                 return new AngleFormatInfo()
                 {
-                    degreeStyle = DegreeStyle.Hours,
+                    degreeStyle = AngleStyle.Hms,
                     increment = 0.15 / 3600.0,
                     numberFormatString = ".00",
                     hourSymbol = Constants.AsciiSymbols[(int)Symbol.Colon],
@@ -170,7 +170,7 @@ namespace Jhu.SharpAstroLib.Coords
             {
                 return new AngleFormatInfo()
                 {
-                    degreeStyle = DegreeStyle.Symbols,
+                    degreeStyle = AngleStyle.Dms,
                     increment = 0.01 / 3600.0,
                     numberFormatString = ".00",
                     degreeSymbol = Constants.AsciiSymbols[(int)Symbol.Colon],
