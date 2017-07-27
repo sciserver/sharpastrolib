@@ -31,6 +31,7 @@ namespace Jhu.SharpAstroLib.Coords
 
     public enum AngleStyle
     {
+        Any,
         Decimal,
         Dms,
         Hms,

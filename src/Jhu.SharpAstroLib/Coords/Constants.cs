@@ -21,7 +21,7 @@ namespace Jhu.SharpAstroLib.Coords
         public const double SqlNaN = -9999;
 
         public static readonly char[] Separators = new char[] { ' ', '\t', ',', ';' };
-        public static readonly char[] HmsSeparators = new char[] { ':', 'h', 'H', 'm', 'M', 's', 'S'  };
+        public static readonly char[] HmsSeparators = new char[] { ':', 'h', 'H', 'm', 'M', 's', 'S' };
         public static readonly char[] DmsSeparators = new char[] { ':', 'd', 'D', 'm', 'M', 's', 'S', '°', '\'', '"' };
 
         public static readonly string[] AsciiSymbols = new string[]
@@ -33,29 +33,43 @@ namespace Jhu.SharpAstroLib.Coords
         {
             "\u2212",       // figure dash
             "+",
-            "\u2007",        // figure space (aligns digits better)
+            "\u2007",       // figure space (aligns digits better)
             ".",
             ":",
-            "\u00B0",
-            "\u2032",    // prime
-            "\u2033",    // double prime
-            "\u02B0",         // superscript h
+            "\u00B0",       // degree
+            "\u2032",       // prime
+            "\u2033",       // double prime
+            "\u02B0",       // superscript h
             "\u1D50",       // superscript m
             "\u02E2",       // superscript s
         };
 
         public static readonly string[] HtmlSymbols = new string[]
         {
-            "-", "+", ".", "&nbsp;", ":", "&deg;", "'", "&quot;", "h", "m", "s"
+            "-", "+", ".", "&nbsp;", ":", "&deg;", "'", "&quot;", "<sup>h</sup>", "<sup>m</sup>", "<sup>s</sup>"
         };
 
-        public const string SignFormatString = @"([\+-])?";
-        public const string IntegerFormatString = @"(\d+)";
-        public const string DecimalFormatString = @"(\d+\.\d+|\d+|\.\d+|\d+\.)";
-        public const string NumericFormatString = SignFormatString + DecimalFormatString;
-        public const string HmsFormatString = SignFormatString + @"(\d{1,3}[:h°]\d{1,2}[:m]" + NumericFormatString + @"s?)";
-        public const string DmsFormatString = SignFormatString + @"(\d{1,3}[:d°]\d{1,2}[:m']" + NumericFormatString + @"[s""]?)";
+        public static readonly string[] LatexSymbols = new string[]
+        {
+            "-", "+", "~", ".", ":", "^{\\circ}", "'", "''", "^{h}", "^{m}", "^{s}"
+        };
 
-        public static readonly Regex HmsRegex = new Regex(@"^\s*" + HmsFormatString, RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
+        private const string BeginFormatPart = @"(?ix)^\s*";
+        private const string EndFormatPart = @"\s*$";
+        private const string SignFormatPart = @"(?<sign>[\+-]?)";
+        private const string IntegerFormatPart = @"\d+";
+        private const string DecimalFormatPart = @"\d+\.\d+|\d+|\.\d+|\d+\.";
+        private const string HmsFormatPart = @"(?<deg>\d{1,3})[:h](?<min>\d{1,2})[:m](?<sec>" + DecimalFormatPart + @")s?";
+        private const string DmsFormatPart = @"(?<deg>\d{1,3})[:d°](?<min>\d{1,2})[:m'](?<sec>" + DecimalFormatPart + @")[s""]?";
+
+        public const string DecimalFormatString = BeginFormatPart + SignFormatPart + "(?<decimal>" + DecimalFormatPart + ")" + EndFormatPart;
+        public const string HmsFormatString = BeginFormatPart + SignFormatPart + HmsFormatPart + EndFormatPart;
+        public const string DmsFormatString = BeginFormatPart + SignFormatPart + DmsFormatPart + EndFormatPart;
+        public const string AnyAngleFormatString =
+            BeginFormatPart + SignFormatPart + "(?:" +
+            "(?<decimal>" + DecimalFormatPart + ")" + "|" +
+            HmsFormatPart + "|" +
+            DmsFormatPart + ")" +
+            EndFormatPart;
     }
 }

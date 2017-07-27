@@ -12,7 +12,7 @@ namespace Jhu.SharpAstroLib.Web.UI.Controls
     {
         private AngleStyle AngleStyle
         {
-            get { return (AngleStyle)(ViewState["AngleStyle"] ?? AngleStyle.Decimal); }
+            get { return (AngleStyle)(ViewState["AngleStyle"] ?? AngleStyle.Any); }
             set { ViewState["AngleStyle"] = value; }
         }
 
@@ -24,14 +24,17 @@ namespace Jhu.SharpAstroLib.Web.UI.Controls
         {
             switch (AngleStyle)
             {
+                case AngleStyle.Any:
+                    this.ValidationExpression = Util.RegexConverter.ToJavascript(Coords.Constants.AnyAngleFormatString);
+                    break;
                 case AngleStyle.Decimal:
-                    this.ValidationExpression = Coords.Constants.DecimalFormatString;
+                    this.ValidationExpression = Util.RegexConverter.ToJavascript(Coords.Constants.DecimalFormatString);
                     break;
                 case AngleStyle.Hms:
-                    this.ValidationExpression = Coords.Constants.HmsFormatString;
+                    this.ValidationExpression = Util.RegexConverter.ToJavascript(Coords.Constants.HmsFormatString);
                     break;
                 case AngleStyle.Dms:
-                    this.ValidationExpression = Coords.Constants.DmsFormatString;
+                    this.ValidationExpression = Util.RegexConverter.ToJavascript(Coords.Constants.DmsFormatString);
                     break;
                 default:
                     throw new NotImplementedException();
