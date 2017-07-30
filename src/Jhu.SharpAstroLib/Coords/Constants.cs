@@ -59,7 +59,7 @@ namespace Jhu.SharpAstroLib.Coords
         private const string SignFormatPart = @"(?<sign>[\+-]?)";
         private const string IntegerFormatPart = @"\d+";
         private const string DecimalFormatPart = @"\d+\.\d+|\d+|\.\d+|\d+\.";
-        private const string HmsFormatPart = @"(?<deg>\d{1,3})[:h](?<min>\d{1,2})[:m](?<sec>" + DecimalFormatPart + @")s?";
+        private const string HmsFormatPart = @"(?<hour>\d{1,3})[:h](?<min>\d{1,2})[:m](?<sec>" + DecimalFormatPart + @")s?";
         private const string DmsFormatPart = @"(?<deg>\d{1,3})[:d°](?<min>\d{1,2})[:m'](?<sec>" + DecimalFormatPart + @")[s""]?";
 
         public const string DecimalFormatString = BeginFormatPart + SignFormatPart + "(?<decimal>" + DecimalFormatPart + ")" + EndFormatPart;

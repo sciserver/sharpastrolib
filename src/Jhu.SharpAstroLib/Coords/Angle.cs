@@ -63,69 +63,68 @@ namespace Jhu.SharpAstroLib.Coords
             return degree;
         }
 
-        public static bool TryParseHms(string value, out double degree)
+        public static Angle ParseHmsOrDecimal(string value)
         {
-            degree = double.NaN;
-
             if (value == null)
             {
-                return false;
+                throw new ArgumentNullException();
             }
 
-            // Break string into parts
-            var parts = value.Split(Constants.HmsSeparators);
+            double degree;
 
-            // There can be three or four parts. Three parts means fractional seconds
-            // are attached to the seconds part, in case of four parts, they're separate, but
-            // stich them now and handle them together
-
-            if (parts.Length < 3 || parts.Length > 4)
+            if (!TryParseHmsOrDecimal(value, out degree))
             {
-                return false;
+                throw new FormatException();
             }
-            else if (parts.Length == 4)
+
+            return degree;
+        }
+
+        public static Angle ParseDmsOrDecimal(string value)
+        {
+            if (value == null)
             {
-                // Stich fractional part to seconds
-                parts[2] += parts[3];
+                throw new ArgumentNullException();
             }
 
-            // Now we have to parse the three parts only
-            int hours, minutes;
-            double seconds;
+            double degree;
 
-            if (!int.TryParse(parts[0], out hours) ||
-                !int.TryParse(parts[1], out minutes) ||
-                !double.TryParse(parts[2], NumberStyles.Float, CultureInfo.InvariantCulture, out seconds))
+            if (!TryParseDmsOrDecimal(value, out degree))
             {
-                // parsing any of the three parts failed
-                return false;
+                throw new FormatException();
             }
 
-            // So far so good, but check ranges
-            if (hours < -12 || hours > 23)
-            {
-                return false;
-            }
+            return degree;
+        }
 
-            if (minutes < 0 || minutes > 59)
-            {
-                return false;
-            }
+        public static bool TryParseHmsOrDecimal(string value, out double degree)
+        {
+            return
+                TryParseHms(value, out degree) ||
+                Double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out degree);
+        }
 
-            if (seconds < 0 || seconds >= 60)
-            {
-                return false;
-            }
+        public static bool TryParseDmsOrDecimal(string value, out double degree)
+        {
+            return
+                TryParseDms(value, out degree) ||
+                Double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out degree);
+        }
 
-            // Everything seems fine, convert to degrees
-
-            degree = 15.0 * hours + 0.25 * minutes + 0.25 / 60.0 * seconds;
-
-            return true;
+        public static bool TryParseHms(string value, out double degree)
+        {
+            var res = TryParseDms(value, Constants.HmsSeparators, out degree);
+            degree *= 15;
+            return res;
         }
 
         public static bool TryParseDms(string value, out double degree)
         {
+            return TryParseDms(value, Constants.DmsSeparators, out degree);
+        }
+
+        private static bool TryParseDms(string value, char[] separators, out double degree)
+        {
             degree = double.NaN;
 
             if (value == null)
@@ -135,7 +134,7 @@ namespace Jhu.SharpAstroLib.Coords
 
             // Break string into parts
 
-            var parts = value.Split(Constants.DmsSeparators);
+            var parts = value.Split(separators);
 
             // There can be three or four parts. Three parts means fractional seconds
             // are attached to the seconds part, in case of four parts, they're separate, but
@@ -147,7 +146,7 @@ namespace Jhu.SharpAstroLib.Coords
             }
             else if (parts.Length == 4)
             {
-                // Stich fractional part to seconds
+                // Stitch fractional part to seconds
                 parts[2] += parts[3];
             }
 
