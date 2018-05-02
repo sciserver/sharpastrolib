@@ -6,22 +6,53 @@ namespace Jhu.SharpAstroLib.Coords
 {
     public struct Angle
     {
-        private double value;
-
-        public double Value
+        public static Angle Null
         {
-            get { return value; }
-            set { this.value = value; }
+            get { return new Angle() { isNull = true }; }
+        }
+
+        private bool isNull;
+        private double degrees;
+
+        public bool IsNull
+        {
+            get { return isNull; }
+            set { isNull = value; }
+        }
+
+        public double Degrees
+        {
+            get { return this.degrees; }
+            set { this.degrees = value; }
+        }
+
+        public double Radians
+        {
+            get { return this.degrees / 180.0 * Math.PI; }
+            set { this.degrees = value * 180.0 / Math.PI; }
+        }
+
+        public double ArcMinutes
+        {
+            get { return this.degrees * 60.0; }
+            set { this.degrees = value / 60.0; }
+        }
+
+        public double ArcSeconds
+        {
+            get { return this.degrees * 3600.0; }
+            set { this.degrees = value / 3600.0; }
         }
 
         public Angle(double degree)
         {
-            this.value = degree;
+            this.isNull = false;
+            this.degrees = degree;
         }
 
         public static explicit operator double(Angle degree)
         {
-            return degree.value;
+            return degree.degrees;
         }
 
         public static implicit operator Angle(double degree)
@@ -350,7 +381,7 @@ namespace Jhu.SharpAstroLib.Coords
 
         public string ToString(AngleFormatInfo angleFormat)
         {
-            return FormatDegree(value, angleFormat);
+            return FormatDegree(degrees, angleFormat);
         }
     }
 }

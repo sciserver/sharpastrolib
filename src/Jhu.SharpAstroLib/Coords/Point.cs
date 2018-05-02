@@ -18,8 +18,8 @@ namespace Jhu.SharpAstroLib.Coords
         }
 
         private bool isNull;
-        private double theta;
-        private double phi;
+        private double lon;
+        private double lat;
         private double x;
         private double y;
         private double z;
@@ -30,32 +30,32 @@ namespace Jhu.SharpAstroLib.Coords
             set { isNull = value; }
         }
 
-        public double Theta
+        public double Lon
         {
             get
             {
-                if (theta == Constants.SqlNaN)
+                if (lon == Constants.SqlNaN)
                 {
-                    Cartesian2Spherical(x, y, z, out theta, out phi);
+                    Cartesian2Spherical(x, y, z, out lon, out lat);
                 }
 
-                return theta;
+                return lon;
             }
-            set { theta = value; }
+            set { lon = value; }
         }
 
-        public double Phi
+        public double Lat
         {
             get
             {
-                if (phi == Constants.SqlNaN)
+                if (lat == Constants.SqlNaN)
                 {
-                    Cartesian2Spherical(x, y, z, out theta, out phi);
+                    Cartesian2Spherical(x, y, z, out lon, out lat);
                 }
 
-                return phi;
+                return lat;
             }
-            set { phi = value; }
+            set { lat = value; }
         }
 
         public double X
@@ -64,7 +64,7 @@ namespace Jhu.SharpAstroLib.Coords
             {
                 if (x == Constants.SqlNaN)
                 {
-                    Spherical2Cartesian(theta, phi, out x, out y, out z);
+                    Spherical2Cartesian(lon, lat, out x, out y, out z);
                 }
 
                 return x;
@@ -78,7 +78,7 @@ namespace Jhu.SharpAstroLib.Coords
             {
                 if (y == Constants.SqlNaN)
                 {
-                    Spherical2Cartesian(theta, phi, out x, out y, out z);
+                    Spherical2Cartesian(lon, lat, out x, out y, out z);
                 }
 
                 return y;
@@ -92,7 +92,7 @@ namespace Jhu.SharpAstroLib.Coords
             {
                 if (z == Constants.SqlNaN)
                 {
-                    Spherical2Cartesian(theta, phi, out x, out y, out z);
+                    Spherical2Cartesian(lon, lat, out x, out y, out z);
                 }
 
                 return z;
@@ -100,13 +100,13 @@ namespace Jhu.SharpAstroLib.Coords
             set { z = value; }
         }
 
-        public static Point FromPolar(double theta, double phi)
+        public static Point FromSpherical(double lon, double lat)
         {
             return new Point()
             {
                 isNull = false,
-                theta = theta,
-                phi = phi,
+                lon = lon,
+                lat = lat,
                 x = Constants.SqlNaN,
                 y = Constants.SqlNaN,
                 z = Constants.SqlNaN
@@ -118,8 +118,8 @@ namespace Jhu.SharpAstroLib.Coords
             return new Point()
             {
                 isNull = false,
-                theta = Constants.SqlNaN,
-                phi = Constants.SqlNaN,
+                lon = Constants.SqlNaN,
+                lat = Constants.SqlNaN,
                 x = x,
                 y = y,
                 z = z
@@ -292,9 +292,9 @@ namespace Jhu.SharpAstroLib.Coords
 
         public static Point Parse(SqlString value)
         {
-            double theta, phi;
+            double lon, lat;
 
-            if (!TryParseCoordinates(value.Value, out theta, out phi))
+            if (!TryParse(value.Value, out lon, out lat))
             {
                 throw new FormatException();
             }
@@ -302,17 +302,17 @@ namespace Jhu.SharpAstroLib.Coords
             return new Point()
             {
                 isNull = false,
-                theta = theta,
-                phi = phi,
+                lon = lon,
+                lat = lat,
                 x = Constants.SqlNaN,
                 y = Constants.SqlNaN,
                 z = Constants.SqlNaN,
             };
         }
 
-        private static bool TryParseCoordinates(string value, out double theta, out double phi)
+        private static bool TryParse(string value, out double lon, out double lat)
         {
-            theta = phi = Constants.SqlNaN;
+            lon = lat = Constants.SqlNaN;
 
             // First identify parts seperated by whitespaces, colons, semicolons,
             // anything that's not used in degree notation
@@ -328,8 +328,8 @@ namespace Jhu.SharpAstroLib.Coords
 
             // Now try to parse coordinates as decimal values
 
-            if (double.TryParse(parts[0], NumberStyles.Float, CultureInfo.InvariantCulture, out theta) &&
-                double.TryParse(parts[1], NumberStyles.Float, CultureInfo.InvariantCulture, out phi))
+            if (double.TryParse(parts[0], NumberStyles.Float, CultureInfo.InvariantCulture, out lon) &&
+                double.TryParse(parts[1], NumberStyles.Float, CultureInfo.InvariantCulture, out lat))
             {
                 // Coordinates are decimal numbers
 
@@ -338,8 +338,8 @@ namespace Jhu.SharpAstroLib.Coords
 
             // Now try to interpret them as HMS and DMS values
 
-            if (Angle.TryParseHms(parts[0], out theta) &&
-                Angle.TryParseDms(parts[1], out phi))
+            if (Angle.TryParseHms(parts[0], out lon) &&
+                Angle.TryParseDms(parts[1], out lat))
             {
                 // Coordinates are indeed HMS and DMS values
 
@@ -353,7 +353,7 @@ namespace Jhu.SharpAstroLib.Coords
 
         public string ToStringRaDec(AngleFormatInfo raFormat, AngleFormatInfo decFormat)
         {
-            return new Angle(theta).ToString(raFormat) + " " + new Angle(phi).ToString(decFormat);
+            return new Angle(lon).ToString(raFormat) + " " + new Angle(lat).ToString(decFormat);
         }
 
         public override string ToString()
