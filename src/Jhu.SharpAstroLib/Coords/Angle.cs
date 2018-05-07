@@ -28,20 +28,20 @@ namespace Jhu.SharpAstroLib.Coords
 
         public double Radians
         {
-            get { return this.degrees / 180.0 * Math.PI; }
-            set { this.degrees = value * 180.0 / Math.PI; }
+            get { return this.degrees * Constants.Degree2Radian; }
+            set { this.degrees = value * Constants.Radian2Degree; }
         }
 
         public double ArcMinutes
         {
-            get { return this.degrees * 60.0; }
-            set { this.degrees = value / 60.0; }
+            get { return this.degrees * Constants.Degree2ArcMin; }
+            set { this.degrees = value * Constants.ArcMin2Degree; }
         }
 
         public double ArcSeconds
         {
-            get { return this.degrees * 3600.0; }
-            set { this.degrees = value / 3600.0; }
+            get { return this.degrees * Constants.Degree2ArcSec; }
+            set { this.degrees = value * Constants.ArcSec2Degree; }
         }
 
         public Angle(double degree)
@@ -330,13 +330,13 @@ namespace Jhu.SharpAstroLib.Coords
                 sb.Append(angleFormat.ArcMinuteSymbol);
             }
 
-            if (angleFormat.Increment < 1 / 60.0)
+            if (angleFormat.Increment < Constants.ArcMin2Degree)
             {
                 sb.Append(secfloor.ToString("00", angleFormat.NumberFormat));
                 sb.Append(angleFormat.ArcSecondSymbol);
             }
 
-            if (angleFormat.Increment < 1 / 3600.0)
+            if (angleFormat.Increment < Constants.ArcSec2Degree)
             {
                 sb.Append(secfrac.ToString(angleFormat.NumberFormatString, angleFormat.NumberFormat));
             }
@@ -367,13 +367,13 @@ namespace Jhu.SharpAstroLib.Coords
                 sb.Append(angleFormat.MinuteSymbol);
             }
 
-            if (angleFormat.Increment < 15 / 60.0)
+            if (angleFormat.Increment < 15 * Constants.ArcMin2Degree)
             {
                 sb.Append(secfloor.ToString("00", angleFormat.NumberFormat));
                 sb.Append(angleFormat.SecondSymbol);
             }
 
-            if (angleFormat.Increment < 15 / 3600.0)
+            if (angleFormat.Increment < 15 * Constants.ArcSec2Degree)
             {
                 sb.Append(secfrac.ToString(angleFormat.NumberFormatString, angleFormat.NumberFormat));
             }

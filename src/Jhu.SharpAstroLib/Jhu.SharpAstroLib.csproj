@@ -63,6 +63,7 @@
     <Compile Include="Coords\AngleFormatInfo.cs" />
     <Compile Include="Coords\Enum.cs" />
     <Compile Include="Coords\Point.cs" />
+    <Compile Include="Coords\Transformation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\RegexConverter.cs" />
   </ItemGroup>

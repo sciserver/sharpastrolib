@@ -16,6 +16,12 @@ namespace Jhu.SharpAstroLib.Coords
         public const double DegreeTolerance = 2.777777778e-7;
 
         public const double Degree2Radian = Math.PI / 180;
+        public const double Degree2ArcMin = 60.0;
+        public const double Degree2ArcSec = 3600.0;
+        public const double ArcMin2Degree = 1.0 / 60.0;
+        public const double ArcMin2Radian = 1.0 / 60.0 / 180.0 * Math.PI;
+        public const double ArcSec2Degree = 1.0 / 3600.0;
+        public const double ArcSec2Radian = 1.0 / 3600.0 / 180.0 * Math.PI;
         public const double Radian2Degree = 180 / Math.PI;
         public const double HalfPI = 0.5 * Math.PI;
         public const double SqlNaN = -9999;
@@ -71,5 +77,23 @@ namespace Jhu.SharpAstroLib.Coords
             HmsFormatPart + "|" +
             DmsFormatPart + ")" +
             EndFormatPart;
+
+        /// <summary>
+        /// Rotation matrix to convert equatorial coordinats to galactic
+        /// J2000
+        /// </summary>
+        public static readonly double[] Eq2GalJ2000 = 
+            {-0.054875657707, -0.873437051953, -0.483835073621,
+             +0.494109437203, -0.444829721222, +0.746982183981,
+             -0.867666137554, -0.198076337284, +0.455983813693};
+
+        /// <summary>
+        /// Rotation matrix to convert galactic coordinats to equatorial
+        /// J2000
+        /// </summary>
+        public static readonly double[] Gal2EqJ2000 = 
+            {-0.05487566,  0.49410944, -0.86766614,
+             -0.87343705, -0.44482972, -0.19807634,
+             -0.48383507,  0.74698218,  0.45598381};
     }
 }

@@ -126,6 +126,19 @@ namespace Jhu.SharpAstroLib.Coords
             };
         }
 
+        public static Point FromBoth(double lon, double lat, double x, double y, double z)
+        {
+            return new Point()
+            {
+                isNull = false,
+                lon = lon,
+                lat = lat,
+                x = x,
+                y = y,
+                z = z
+            };
+        }
+
         public static void Cartesian2Spherical(double x, double y, double z, out double theta, out double phi)
         {
             Cartesian2SphericalRadians(x, y, z, out theta, out phi);
